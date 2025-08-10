@@ -4,6 +4,8 @@ from components.enums import GameState
 @dataclass
 class CardGame:
     state: GameState
+    # Add board state object
+    # Add GUI object that uses the Textual library
 
     @classmethod
     def create(cls):
@@ -13,6 +15,7 @@ class CardGame:
 
     def init(self):
         self.assert_state(GameState.initializing)
+        # Load decks and create board
         self.set_state(GameState.initialized)
 
     def start(self):
@@ -25,13 +28,10 @@ class CardGame:
 
     def loop(self):
         while self.state != GameState.quitting:
-            if self.state != GameState.game_play:
-                print("Game start!")
-                loop = GameLoop(game=self)
-                loop.loop()
-            elif self.state != GameState.game_end:
-                print("Game over!")
-                self.set_state(GameState.quitting)
+            if self.state == GameState.game_play:
+                game = GameLoop(game=self, turn=0)
+                game.loop()
+            self.set_state(GameState.quitting)
         self.quit()
 
     def set_state(self, new_state):
@@ -45,14 +45,17 @@ class CardGame:
 
 @dataclass
 class GameLoop:
-    game: CardGame 
+    game: CardGame
+    turn: int
 
     def handle_events(self):
-        print("Closing game")
         self.set_state(GameState.quitting)
 
     def loop(self):
         while self.state != GameState.quitting:
+            # Setup if turn number is 0
+            # After setup, determine turn order
+            # Then take turns, and handle actions until game ends
             self.handle_events()
 
     def set_state(self, new_state):
@@ -61,3 +64,9 @@ class GameLoop:
     @property
     def state(self):
         return self.game.state
+
+    def board(self):
+        return
+
+    def gui(self):
+        return

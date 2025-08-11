@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from components.gui import run_gui
 from components.enums import GameState
 
 @dataclass
@@ -21,7 +22,8 @@ class CardGame:
     def start(self):
         self.assert_state(GameState.initialized)
         self.set_state(GameState.game_play)
-        self.loop()
+        #self.loop()
+        run_gui()
     
     def quit(self):
         self.assert_state(GameState.quitting)
